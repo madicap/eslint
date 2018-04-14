@@ -109,6 +109,7 @@
     "proxyquire": "^2.0.1",
     "shelljs": "^0.8.1",
     "sinon": "^3.3.0",
+    "spellchecker-cli": "git+https://github.com/tbroadley/spellchecker-cli.git",
     "temp": "^0.8.3",
     "through": "^2.3.8"
   },
