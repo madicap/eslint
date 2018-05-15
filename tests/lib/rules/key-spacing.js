@@ -825,7 +825,7 @@ ruleTester.run("key-spacing", rule, {
         }],
         parserOptions: { ecmaVersion: 6 }
     }, {
-        code: `callFn({foo: bar, test: other});`,
+        code: "callFn({foo: bar, test: other});",
         options: [{
             multiLine: {
                 linebreak: "below"
@@ -1935,39 +1935,6 @@ ruleTester.run("key-spacing", rule, {
         errors: [
             { message: "Consistent linebreak formatting expected for keys and values.", line: 4, column: 5, type: "ArrowFunctionExpression" },
             { message: "Consistent linebreak formatting expected for keys and values.", line: 8, column: 5, type: "Literal" }
-        ]
-    }, {
-        code: [
-            "var obj = {",
-            "    singleLineKey: ",
-            "    'testing',",
-            "    multiLineKey: (bob) => {",
-            "        console.log(bob);",
-            "    },",
-            "    matchingSingleLineKey:",
-            "    'otherValue'",
-            "}"
-        ].join("\n"),
-        output: [
-            "var obj = {",
-            "    singleLineKey: ",
-            "    'testing',",
-            "    multiLineKey: ",
-            "    (bob) => {",
-            "        console.log(bob);",
-            "    },",
-            "    matchingSingleLineKey:",
-            "    'otherValue'",
-            "}"
-        ].join("\n"),
-        options: [{
-            multiLine: {
-                linebreak: "consistent"
-            }
-        }],
-        parserOptions: { ecmaVersion: 6 },
-        errors: [
-            { message: "Consistent linebreak formatting expected for keys and values.", line: 4, column: 19, type: "ArrowFunctionExpression" }
         ]
     }, {
         code: [
