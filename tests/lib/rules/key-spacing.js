@@ -12,6 +12,10 @@
 const rule = require("../../../lib/rules/key-spacing"),
     RuleTester = require("../../../lib/testers/rule-tester");
 
+//------------------------------------------------------------------------------
+// Tests
+//------------------------------------------------------------------------------
+
 const ruleTester = new RuleTester();
 
 ruleTester.run("key-spacing", rule, {
@@ -757,6 +761,76 @@ ruleTester.run("key-spacing", rule, {
             }
         }],
         parserOptions: { ecmaVersion: 6 }
+    },
+
+    // Linebreak Tests
+    {
+        code: ` const testCode = {
+            singleLineKey: "testing",
+            multiLineKey: (bob) => {
+                console.log(bob);
+            }
+        }
+        `,
+        options: [{
+            multiLine: {
+                linebreak: "beside"
+            }
+        }],
+        parserOptions: { ecmaVersion: 6 }
+    }, {
+        code: ` const testCode = {
+            singleLineKey:
+            "testing",
+            multiLineKey:
+            (bob) => {
+                console.log(bob);
+            }
+        }
+        `,
+        options: [{
+            multiLine: {
+                linebreak: "below"
+            }
+        }],
+        parserOptions: { ecmaVersion: 6 }
+    }, {
+        code: ` const testCode = {
+            singleLineKey:
+            "testing",
+            multiLineKey:
+            (bob) => {
+                console.log(bob);
+            }
+        }
+        `,
+        options: [{
+            multiLine: {
+                linebreak: "consistent"
+            }
+        }],
+        parserOptions: { ecmaVersion: 6 }
+    }, {
+        code: ` const testCode = {
+            singleLineKey: "testing",
+            multiLineKey: (bob) => {
+                console.log(bob);
+            }
+        }
+        `,
+        options: [{
+            multiLine: {
+                linebreak: "consistent"
+            }
+        }],
+        parserOptions: { ecmaVersion: 6 }
+    }, {
+        code: `callFn({foo: bar, test: other});`,
+        options: [{
+            multiLine: {
+                linebreak: "below"
+            }
+        }]
     }],
 
     invalid: [{
@@ -1768,6 +1842,165 @@ ruleTester.run("key-spacing", rule, {
         errors: [
             { message: "Missing space after key 'foo'.", line: 1, column: 7, type: "Identifier" },
             { message: "Missing space before value for key 'foo'.", line: 1, column: 19, type: "Identifier" }
+        ]
+    },
+
+    // Linebreak Tests
+    {
+        code: [
+            "var obj = {",
+            "    singleLineKey: 'testing',",
+            "    multiLineKey: (bob) => {",
+            "        console.log(bob);",
+            "    }",
+            "}"
+        ].join("\n"),
+        output: [
+            "var obj = {",
+            "    singleLineKey: ",
+            "    'testing',",
+            "    multiLineKey: ",
+            "    (bob) => {",
+            "        console.log(bob);",
+            "    }",
+            "}"
+        ].join("\n"),
+        options: [{
+            multiLine: {
+                linebreak: "below"
+            }
+        }],
+        parserOptions: { ecmaVersion: 6 },
+        errors: [
+            { message: "Key and multi-line value expected to be on different lines for below.", line: 2, column: 20, type: "Literal" },
+            { message: "Key and multi-line value expected to be on different lines for below.", line: 3, column: 19, type: "ArrowFunctionExpression" }
+        ]
+    }, {
+        code: [
+            "var obj = {",
+            "    singleLineKey: ",
+            "    'testing',",
+            "    multiLineKey: ",
+            "    (bob) => {",
+            "        console.log(bob);",
+            "    }",
+            "}"
+        ].join("\n"),
+        output: [
+            "var obj = {",
+            "    singleLineKey: 'testing',",
+            "    multiLineKey: (bob) => {",
+            "        console.log(bob);",
+            "    }",
+            "}"
+        ].join("\n"),
+        options: [{
+            multiLine: {
+                linebreak: "beside"
+            }
+        }],
+        parserOptions: { ecmaVersion: 6 },
+        errors: [
+            { message: "Key and multi-line value expected to be on the same line for beside.", line: 3, column: 5, type: "Literal" },
+            { message: "Key and multi-line value expected to be on the same line for beside.", line: 5, column: 5, type: "ArrowFunctionExpression" }
+        ]
+
+    }, {
+        code: [
+            "var obj = {",
+            "    singleLineKey: 'testing',",
+            "    multiLineKey: ",
+            "    (bob) => {",
+            "        console.log(bob);",
+            "    },",
+            "    matchingSingleLineKey:",
+            "    'otherValue'",
+            "}"
+        ].join("\n"),
+        output: [
+            "var obj = {",
+            "    singleLineKey: 'testing',",
+            "    multiLineKey: (bob) => {",
+            "        console.log(bob);",
+            "    },",
+            "    matchingSingleLineKey: 'otherValue'",
+            "}"
+        ].join("\n"),
+        options: [{
+            multiLine: {
+                linebreak: "consistent"
+            }
+        }],
+        parserOptions: { ecmaVersion: 6 },
+        errors: [
+            { message: "Consistent linebreak formatting expected for keys and values.", line: 4, column: 5, type: "ArrowFunctionExpression" },
+            { message: "Consistent linebreak formatting expected for keys and values.", line: 8, column: 5, type: "Literal" }
+        ]
+    }, {
+        code: [
+            "var obj = {",
+            "    singleLineKey: ",
+            "    'testing',",
+            "    multiLineKey: (bob) => {",
+            "        console.log(bob);",
+            "    },",
+            "    matchingSingleLineKey:",
+            "    'otherValue'",
+            "}"
+        ].join("\n"),
+        output: [
+            "var obj = {",
+            "    singleLineKey: ",
+            "    'testing',",
+            "    multiLineKey: ",
+            "    (bob) => {",
+            "        console.log(bob);",
+            "    },",
+            "    matchingSingleLineKey:",
+            "    'otherValue'",
+            "}"
+        ].join("\n"),
+        options: [{
+            multiLine: {
+                linebreak: "consistent"
+            }
+        }],
+        parserOptions: { ecmaVersion: 6 },
+        errors: [
+            { message: "Consistent linebreak formatting expected for keys and values.", line: 4, column: 19, type: "ArrowFunctionExpression" }
+        ]
+    }, {
+        code: [
+            "var obj = {",
+            "    singleLineKey: ",
+            "    'testing',",
+            "    multiLineKey: (bob) => {",
+            "        console.log(bob);",
+            "    },",
+            "    matchingSingleLineKey:",
+            "    'otherValue'",
+            "}"
+        ].join("\n"),
+        output: [
+            "var obj = {",
+            "    singleLineKey: ",
+            "    'testing',",
+            "    multiLineKey: ",
+            "    (bob) => {",
+            "        console.log(bob);",
+            "    },",
+            "    matchingSingleLineKey:",
+            "    'otherValue'",
+            "}"
+        ].join("\n"),
+        options: [{
+            multiLine: {
+                linebreak: "consistent"
+            }
+        }],
+        parserOptions: { ecmaVersion: 6 },
+        errors: [
+            { message: "Consistent linebreak formatting expected for keys and values.", line: 4, column: 19, type: "ArrowFunctionExpression" }
         ]
     }]
 });
